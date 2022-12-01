@@ -5,7 +5,7 @@ synopsis:           Advent of Code 20 solutions
 
 -- A longer description of the package.
 -- description:
-homepage:
+homepage: https://github.com/jrc0114/AdventOfCode
 
 -- A URL where users can report bugs.
 -- bug-reports:
