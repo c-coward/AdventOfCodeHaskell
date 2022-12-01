@@ -1,7 +1,7 @@
 cabal-version:      3.0
-name:               AoCXX
+name:               AoC
 version:            0.1.0.0
-synopsis:           Advent of Code 20XX solutions
+synopsis:           Advent of Code 20 solutions
 
 -- A longer description of the package.
 -- description:
@@ -66,7 +66,7 @@ library
     hs-source-dirs:   src
     default-language: Haskell2010
 
-executable AoCXX
+executable AoC
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
@@ -80,7 +80,7 @@ executable AoCXX
         , optparse-applicative
         , containers
         , text
-        , AoCXX
+        , AoC
 
     hs-source-dirs:   app
     default-language: Haskell2010
