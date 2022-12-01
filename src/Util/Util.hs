@@ -5,6 +5,6 @@ module Util.Util where
 (|>) :: a -> (a -> b) -> b
 x |> f = f x
 
--- | Forward composition, Control.Arrow.>>> but cleaner
+-- | Forward composition, equivalent Control.Arrow.>>>
 (.>) :: (a -> b) -> (b -> c) -> (a -> c)
 f .> g = g . f

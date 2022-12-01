@@ -2,7 +2,8 @@ module Days.Day12 where
 
 import Data.Attoparsec.Text
 import Util.Util
-import Util.Parsing
+import Util.Parsing ( Parser )
+import qualified Util.Parsing as P
 
 import qualified Program.RunDay as R (runDay, Day)
 
