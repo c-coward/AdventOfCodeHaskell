@@ -16,8 +16,8 @@ type OutputA = Int
 type OutputB = Int
 
 inputParser :: Parser Input
-inputParser = (++) <$> P.lines (P.lines P.decimal)
-    <*> fmap pure (P.lines P.decimal) -- Grab the last chunk of input
+inputParser = flip (:) <$> P.lines (P.lines P.decimal)
+    <*> P.lines P.decimal -- Grab the last chunk of input
 
 partA :: Input -> OutputA
 partA = map sum .> maximum
