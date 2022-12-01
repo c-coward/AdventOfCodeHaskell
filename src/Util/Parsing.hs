@@ -6,6 +6,7 @@ module Util.Parsing
     ) where
 
 import Data.Attoparsec.Text
+import Data.Text ( Text, unpack )
 
 -- | Parse before a newline character
 line :: Parser a -> Parser a
@@ -18,3 +19,11 @@ lines p = many' $ line p
 -- | Execute a parser surrounded by whitespace
 token :: Parser a -> Parser a
 token p = skipSpace *> p <* skipSpace
+
+-- | Helpful function for manipulating the underlying text directly
+asText :: (Text -> a) -> Parser a
+asText = (<$> takeText)
+
+-- | Converts the underlying text to a string before manipulating it
+asString :: (String -> a) -> Parser a
+asString p = p . unpack <$> takeText
