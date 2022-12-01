@@ -6,18 +6,21 @@ import qualified Util.Parsing as P
 
 import qualified Program.RunDay as R (runDay, Day)
 
+import Data.List ( sort )
+
 runDay :: R.Day
 runDay = R.runDay inputParser partA partB
 
-type Input = ()
-type OutputA = ()
-type OutputB = ()
+type Input = [[Int]]
+type OutputA = Int
+type OutputB = Int
 
 inputParser :: Parser Input
-inputParser = undefined
+inputParser = (++) <$> P.lines (P.lines P.decimal)
+    <*> fmap pure (P.lines P.decimal) -- Grab the last chunk of input
 
 partA :: Input -> OutputA
-partA = undefined
+partA = map sum .> maximum
 
 partB :: Input -> OutputB
-partB = undefined
+partB = map sum .> sort .> reverse .> take 3 .> sum

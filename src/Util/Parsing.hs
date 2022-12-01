@@ -13,7 +13,7 @@ line p = p <* endOfLine
 
 -- | Execute many parsers separated by newlines
 lines :: Parser a -> Parser [a]
-lines p = many' $ line p
+lines p = many' (line p)
 
 -- | Execute a parser surrounded by whitespace
 token :: Parser a -> Parser a
