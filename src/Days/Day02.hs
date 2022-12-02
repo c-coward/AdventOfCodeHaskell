@@ -17,7 +17,7 @@ type OutputA = Int
 type OutputB = Int
 
 inputParser :: Parser Input
-inputParser = P.lines ((,) <$> parseMove <*> (P.skipSpace >> parseResp))
+inputParser = P.lines $ (,) <$> parseMove <*> (P.skipSpace >> parseResp)
 
 partA :: Input -> OutputA
 partA = map (second respToMove .> score) .> sum
