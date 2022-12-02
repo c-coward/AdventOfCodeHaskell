@@ -2,10 +2,12 @@
 -- Re-export the parsing module to help cut back on extra imports across the project
 module Util.Parsing
     ( module Util.Parsing
-    , module Data.Attoparsec.Text
+    , module Data.Attoparsec.Text -- Avoid re importing parsing funcs
+    , module Control.Applicative -- Useful for parsing etc
     ) where
 
 import Data.Attoparsec.Text
+import Control.Applicative
 import Data.Text ( Text, unpack )
 
 -- | Parse before a newline character
