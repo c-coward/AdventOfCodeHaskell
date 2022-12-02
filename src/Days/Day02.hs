@@ -5,6 +5,7 @@ import Util.Util
 import Util.Parsing ( Parser )
 import qualified Util.Parsing as P
 
+import Data.Functor ( ($>) )
 import Data.Bifunctor ( second )
 
 import qualified Program.RunDay as R (runDay, Day)
@@ -16,14 +17,8 @@ type Input = [(Move, Resp)]
 type OutputA = Int
 type OutputB = Int
 
-parseMove = P.choice
-    [ P.char 'A' >> pure Rock
-    , P.char 'B' >> pure Paper
-    , P.char 'C' >> pure Scissors]
-parseResp = P.choice
-    [ P.char 'X' >> pure X
-    , P.char 'Y' >> pure Y
-    , P.char 'Z' >> pure Z]
+parseMove = P.char 'A' $> Rock <|> P.char 'B' $> Paper <|> P.char 'C' $> Scissors
+parseResp = P.char 'X' $> X <|> P.char 'Y' $> Y <|> P.char 'Z' $> Z
 
 inputParser :: Parser Input
 inputParser = P.lines $ (,) <$> parseMove <*> (P.skipSpace >> parseResp)
