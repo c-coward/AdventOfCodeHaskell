@@ -10,11 +10,11 @@ import Data.Text ( Text, unpack )
 
 -- | Parse before a newline character
 line :: Parser a -> Parser a
-line p = p <* endOfLine
+line p = p <* choice [endOfLine, endOfInput]
 
 -- | Execute many parsers separated by newlines
 lines :: Parser a -> Parser [a]
-lines p = (++) <$> many' (line p) <*> fmap pure p
+lines p = many' $ line p
 
 -- | Execute a parser surrounded by whitespace
 token :: Parser a -> Parser a
