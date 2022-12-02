@@ -1,5 +1,9 @@
 -- | Common utility functions
-module Util.Util where
+module Util.Util
+    ( module Util.Util
+    , module Control.Applicative) where
+
+import Control.Applicative
 
 -- | F# Style forward-application
 (|>) :: a -> (a -> b) -> b

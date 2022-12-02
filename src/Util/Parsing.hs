@@ -3,7 +3,6 @@
 module Util.Parsing
     ( module Util.Parsing
     , module Data.Attoparsec.Text -- Avoid re importing parsing funcs
-    , module Control.Applicative -- Useful for parsing etc
     ) where
 
 import Data.Attoparsec.Text
