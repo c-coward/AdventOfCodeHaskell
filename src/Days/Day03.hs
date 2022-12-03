@@ -13,21 +13,25 @@ import qualified Program.RunDay as R (runDay, Day)
 runDay :: R.Day
 runDay = R.runDay inputParser partA partB
 
-type Input = [(String, String)]
+type Input = [String]
 type OutputA = Int
-type OutputB = ()
+type OutputB = Int
 
 inputParser :: Parser Input
-inputParser = P.asString $ lines .> map (\s -> splitAt (length s `div` 2) s)
+inputParser = P.lines P.getLineS
 
 partA :: Input -> OutputA
-partA = sum . map (sum . map prioritize . overlap)
+-- partA = id
+partA = sum . map (sum . map prioritize . overlap . (\s -> chunks (length s `div` 2) s))
 
 partB :: Input -> OutputB
-partB = undefined
+partB = sum . map (sum . map prioritize . overlap) . chunks 3
 
-overlap (s1, s2) = nub [c | c <- s1, c `elem` s2]
+overlap (x:xs) = nub [c | c <- x, all (elem c) xs]
 
 prioritize :: Char -> Int
 prioritize c | isUpper c = fromEnum c - 38
              | otherwise = fromEnum c - 96
+
+chunks n [] = []
+chunks n xs = case splitAt n xs of (a, as) -> a : chunks n as
