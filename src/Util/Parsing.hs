@@ -6,7 +6,6 @@ module Util.Parsing
     ) where
 
 import Data.Attoparsec.Text
-import Control.Applicative
 import Data.Text ( Text, unpack )
 
 -- | Parse before a newline character
