@@ -8,6 +8,16 @@ module Util.Parsing
 import Data.Attoparsec.Text
 import Data.Text ( Text, unpack )
 
+import Prelude hiding ( takeWhile, lines, getLine )
+
+-- | Parse a single line as text
+getLine :: Parser Text
+getLine = takeWhile (not . isEndOfLine)
+
+-- | Parse a single line as a string
+getLineS :: Parser String
+getLineS = unpack <$> getLine
+
 -- | Parse before a newline character
 line :: Parser a -> Parser a
 line p = p <* endOfLine
