@@ -6,7 +6,6 @@ import Util.Parsing ( Parser )
 import qualified Util.Parsing as P
 
 import Data.Char
-import Data.List
 
 import qualified Program.RunDay as R (runDay, Day)
 
@@ -22,12 +21,12 @@ inputParser = P.lines P.getLineS
 
 partA :: Input -> OutputA
 -- partA = id
-partA = sum . map (sum . map prioritize . overlap . (\s -> chunks (length s `div` 2) s))
+partA = sum . map (prioritize . overlap . (\s -> chunks (length s `div` 2) s))
 
 partB :: Input -> OutputB
-partB = sum . map (sum . map prioritize . overlap) . chunks 3
+partB = sum . map (prioritize . overlap) . chunks 3
 
-overlap (x:xs) = nub [c | c <- x, all (elem c) xs]
+overlap (x:xs) = head [c | c <- x, all (elem c) xs]
 
 prioritize :: Char -> Int
 prioritize c | isUpper c = fromEnum c - 38
