@@ -7,6 +7,8 @@ import qualified Util.Parsing as P
 
 import Control.Arrow ((&&&))
 import Data.Ix (inRange)
+import Data.Bifunctor (bimap)
+import Data.Tuple (swap)
 
 import qualified Program.RunDay as R (runDay, Day)
 
@@ -26,13 +28,12 @@ inputParser = P.lines $ do
     return ((a, b), (c, d))
 
 partA :: Input -> OutputA
-partA = length . filter (uncurry (||) . (uncurry within &&& uncurry (flip within)))
+partA = length . filter (uncurry (||) . (within &&& (swap .> within)))
 
 partB :: Input -> OutputB
-partB = length . filter (uncurry (||) . (uncurry overlap &&& uncurry (flip overlap)))
+partB = length . filter (uncurry (||) . (overlap &&& (swap .> overlap)))
 
-within :: (Int, Int) -> (Int, Int) -> Bool
-within (a, b) (c, d) = a >= c && b <= d
-
-overlap :: (Int, Int) -> (Int, Int) -> Bool
-overlap (a, b) (c, d) = inRange (a, b) c || inRange (a, b) d
+testBounds :: ((Int, Int), (Int, Int)) -> (Bool, Bool)
+testBounds = uncurry ((inRange &&& inRange) .> uncurry bimap)
+within = testBounds .> uncurry (&&)
+overlap = testBounds .> uncurry (||)
