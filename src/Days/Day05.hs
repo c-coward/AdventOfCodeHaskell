@@ -38,7 +38,7 @@ type Crates = A.Array Int String
 parseCrates :: Parser [String]
 parseCrates = transpose <$> P.lines
     (P.split (P.anyChar *> P.satisfy (not . isDigit) <* P.anyChar)
-    (P.char ' '))
+        (P.char ' '))
 
 data Move = Move Int Int Int deriving Show
 
