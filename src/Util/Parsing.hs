@@ -37,3 +37,7 @@ asText = (<$> takeText)
 -- | Converts the underlying text to a string before manipulating it
 asString :: (String -> a) -> Parser a
 asString p = p . unpack <$> takeText
+
+-- | Parse elements, ignoring a common separator
+split :: Parser a -> Parser b -> Parser [a]
+split p b = (:) <$> p <*> many' (b >> p)
