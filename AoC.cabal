@@ -58,6 +58,7 @@ library
         TupleSections
         OverloadedStrings
         GADTs
+        RecordWildCards
     build-depends:
         base ^>=4.17.0.0
         , attoparsec

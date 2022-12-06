@@ -40,7 +40,7 @@ parseCrates = transpose <$> P.lines
     (P.split (P.anyChar *> P.satisfy (not . isDigit) <* P.anyChar)
         (P.char ' '))
 
-data Move = Move Int Int Int deriving Show
+data Move = Move {n :: Int, s :: Int, t :: Int} deriving Show
 
 parseMove :: Parser Move
 parseMove = Move <$> (P.token (P.string "move") >> P.decimal)
@@ -48,7 +48,7 @@ parseMove = Move <$> (P.token (P.string "move") >> P.decimal)
     <*> (P.token (P.string "to") >> P.decimal)
 
 moveWith :: (String -> String) -> Crates -> Move -> Crates
-moveWith f xs (Move n s t) =
+moveWith f xs Move{..} =
     let (m, s') = splitAt n (xs A.! s)
         t' = f m ++ (xs A.! t)
     in xs A.// [(s, s'), (t, t')]
