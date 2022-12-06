@@ -4,7 +4,7 @@ import Util.Util
 import Util.Parsing ( Parser )
 import qualified Util.Parsing as P
 
-import Data.List (nub)
+import Data.List
 
 import qualified Program.RunDay as R (runDay, Day)
 
@@ -25,6 +25,4 @@ partB :: Input -> OutputB
 partB = locateDistinct 14
 
 locateDistinct :: Int -> String -> Int
-locateDistinct n xs = case splitAt n xs of
-    (y, ys) | length (nub y) == n -> n
-    _ -> 1 + locateDistinct n (tail xs)
+locateDistinct n = tails .> map (take n .> nub) .> takeWhile (length .> (< n)) .> length .> (+ n)
