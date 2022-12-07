@@ -19,10 +19,10 @@ inputParser :: Parser Input
 inputParser = P.getLineS
 
 partA :: Input -> OutputA
-partA = locateDistinct 4
+partA = findStart 4
 
 partB :: Input -> OutputB
-partB = locateDistinct 14
+partB = findStart 14
 
-locateDistinct :: Int -> String -> Int
-locateDistinct n = tails .> map (take n .> nub) .> takeWhile (length .> (< n)) .> length .> (+ n)
+findStart :: Int -> String -> Int
+findStart n = (+ n) . length . takeWhile ((/=) <*> nub) . map (take n) . tails
