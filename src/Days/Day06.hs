@@ -19,10 +19,7 @@ inputParser :: Parser Input
 inputParser = P.getLineS
 
 partA :: Input -> OutputA
-partA = findStart 4
+partA = (+ 4) . length . takeWhile ((/=) <*> nub) . map (take 4) . tails
 
 partB :: Input -> OutputB
-partB = findStart 14
-
-findStart :: Int -> String -> Int
-findStart n = (+ n) . length . takeWhile ((/=) <*> nub) . map (take n) . tails
+partB = (+ 14) . length . takeWhile ((/=) <*> nub) . map (take 14) . tails
