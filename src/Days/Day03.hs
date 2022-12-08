@@ -20,8 +20,7 @@ inputParser :: Parser Input
 inputParser = P.lines P.getLineS
 
 partA :: Input -> OutputA
--- partA = id
-partA = sum . map (prioritize . overlap . (\s -> chunks (length s `div` 2) s))
+partA = sum . map (prioritize . overlap . (chunks =<< ((`div` 2) . length)))
 
 partB :: Input -> OutputB
 partB = sum . map (prioritize . overlap) . chunks 3
