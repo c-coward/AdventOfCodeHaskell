@@ -20,10 +20,10 @@ inputParser :: Parser Input
 inputParser = P.lines $ map digitToInt <$> P.getLineS
 
 partA :: Input -> OutputA
-partA = transform .> scanGrid visible (-1, False) .> untransform .> foldGrid (||) .> concat .> filter id .> length
+partA = transform .> scanGrid visible (-1) .> untransform .> foldGrid (||) .> concat .> filter id .> length
 
 partB :: Input -> OutputB
-partB = transform .> scanGrid scenic ([], 0) .> untransform .> foldGrid (*) .> concat .> maximum
+partB = transform .> scanGrid scenic [] .> untransform .> foldGrid (*) .> concat .> maximum
 
 -- List transformations to get rows and columns, forwards and backwards
 transforms = [id, transpose, map reverse, map reverse . transpose]
@@ -32,11 +32,11 @@ untransforms = [id, transpose, map reverse, transpose . map reverse]
 transform x = map ($ x) transforms
 untransform = zipWith ($) untransforms
 
-visible :: (Int, Bool) -> Int -> (Int, Bool)
-visible (b, c) a = (max a b, a > b) 
+visible :: Int -> Int -> (Int, Bool)
+visible b a = (max a b, a > b) 
 
-scenic :: ([Int], Int) -> Int -> ([Int], Int)
-scenic (b, c) a = (a : b, length $ takeUntil a b)
+scenic :: [Int] -> Int -> ([Int], Int)
+scenic b a = (a : b, length $ takeUntil a b)
 
 takeUntil :: Ord a => a -> [a] -> [a]
 takeUntil p as@(~(x:xs))
@@ -44,8 +44,8 @@ takeUntil p as@(~(x:xs))
     | x < p = x : takeUntil p xs
     | otherwise = [x]
 
-scanGrid :: ((b, c) -> a -> (b, c)) -> (b, c) -> [[[a]]] -> [[[c]]]
-scanGrid f z = map (map (map snd . tail . scanl f z))
+scanGrid :: (s -> a -> (s, b)) -> s -> [[[a]]] -> [[[b]]]
+scanGrid f z = map (map (snd . mapAccumL f z))
 
 foldGrid :: (a -> a -> a) -> [[[a]]] -> [[a]]
 foldGrid f = foldl1 (zipWith (zipWith f))
