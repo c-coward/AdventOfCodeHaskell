@@ -14,3 +14,6 @@ x |> f = f x
 f .> g = g . f
 
 infixr 1 .>, |>
+
+(&&&+) :: (a -> b -> c) -> (a -> b -> d) -> a -> b -> (c, d)
+f &&&+ g = \a b -> (f a b, g a b)
