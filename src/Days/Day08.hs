@@ -20,12 +20,10 @@ inputParser :: Parser Input
 inputParser = P.lines $ map digitToInt <$> P.getLineS
 
 partA :: Input -> OutputA
-partA = transform .> scanGrid visible (-1, False) .> untransform
-    .> foldGrid (||) .> concat .> filter id .> length
+partA = transform .> scanGrid visible (-1, False) .> untransform .> foldGrid (||) .> concat .> filter id .> length
 
 partB :: Input -> OutputB
-partB = transform .> scanGrid scenic ([], 0) .> untransform
-    .> foldGrid (*) .> concat .> maximum
+partB = transform .> scanGrid scenic ([], 0) .> untransform .> foldGrid (*) .> concat .> maximum
 
 -- List transformations to get rows and columns, forwards and backwards
 transforms = [id, transpose, map reverse, map reverse . transpose]
