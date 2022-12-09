@@ -23,7 +23,7 @@ partA :: Input -> OutputA
 partA = length . nub . scanl follow (P 0 0) . scanl (+) (P 0 0)
 
 partB :: Input -> OutputB
-partB = scanl (+) (P 0 0) .> iterate (scanl follow (P 0 0)) .> (!! 9) .> nub .> length
+partB = length . nub . (!! 9) . iterate (scanl follow (P 0 0)) . scanl (+) (P 0 0)
 
 -- Basic moves
 r = P 0 1
