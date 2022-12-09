@@ -6,7 +6,6 @@ import qualified Util.Parsing as P
 
 import Data.Char ( isSpace )
 import Data.List ( nub )
-import Control.Monad
 
 import qualified Program.RunDay as R (runDay, Day)
 
@@ -24,10 +23,7 @@ partA :: Input -> OutputA
 partA = length . nub . scanl follow (P 0 0) . scanl (+) (P 0 0)
 
 partB :: Input -> OutputB
-partB = scanl (+) (P 0 0) .> scanl follow (P 0 0) .> scanl follow (P 0 0) .> scanl follow (P 0 0) .> tail
-     .> scanl follow (P 0 0) .> scanl follow (P 0 0) .> scanl follow (P 0 0) .> tail
-      .> scanl follow (P 0 0) .> scanl follow (P 0 0) .> scanl follow (P 0 0) .> tail
-      .> nub .> length
+partB = scanl (+) (P 0 0) .> iterate (scanl follow (P 0 0)) .> (!! 9) .> nub .> length
 
 -- Basic moves
 r = P 0 1
