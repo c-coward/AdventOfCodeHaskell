@@ -12,7 +12,7 @@ import qualified Program.RunDay as R (runDay, Day)
 runDay :: R.Day
 runDay = R.runDay inputParser partA partB
 
-type Input = [Pair Int]
+type Input = [V2 Int]
 type OutputA = Int
 type OutputB = Int
 
@@ -20,24 +20,19 @@ inputParser :: Parser Input
 inputParser = concat <$> P.lines parseMove
 
 partA :: Input -> OutputA
-partA = length . nub . scanl follow (P 0 0) . scanl (+) (P 0 0)
+partA = length . nub . scanl follow 0 . scanl (+) 0
 
 partB :: Input -> OutputB
-partB = length . nub . (!! 9) . iterate (scanl follow (P 0 0)) . scanl (+) (P 0 0)
+partB = length . nub . (!! 9) . iterate (scanl follow 0) . scanl (+) 0
 
--- Basic moves
-r = P 0 1
-l = P 0 (-1)
-u = P 1 0
-d = P (-1) 0
+touching t h = case h - t of (V2 x y) -> abs x <= 1 && abs y <= 1
 
-touching t h = case h - t of p@P{..} -> abs x <= 1 && abs y <= 1
-
-follow :: Pair Int -> Pair Int -> Pair Int
+follow :: V2 Int -> V2 Int -> V2 Int
 follow t h = if touching t h then t else t + signum (h - t)
 
-parseMove :: Parser [Pair Int]
+parseMove :: Parser [V2 Int]
 parseMove = do
     c <- P.takeWhile (not . isSpace)
     n <- P.skipSpace >> P.decimal
-    return . replicate n $ case c of {"R" -> r; "L" -> l; "U" -> u; "D" -> d}
+    return . replicate n $ case c of
+        "R" -> V2 0 1; "L" -> V2 0 (-1); "U" -> V2 1 0; "D" -> V2 (-1) 0
