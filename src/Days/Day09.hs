@@ -31,11 +31,10 @@ l = P 0 (-1)
 u = P 1 0
 d = P (-1) 0
 
+touching t h = case h - t of p@P{..} -> abs x <= 1 && abs y <= 1
+
 follow :: Pair Int -> Pair Int -> Pair Int
-follow t h = case h - t of
-    p@P{..} | (x == 0 && abs y > 1) || (y == 0 && abs x > 1) -> t + signum p
-            | x /= 0 && y /= 0 && (abs x > 1 || abs y > 1) -> t + signum p
-            | otherwise -> t
+follow t h = if touching t h then t else t + signum (h - t)
 
 parseMove :: Parser [Pair Int]
 parseMove = do
