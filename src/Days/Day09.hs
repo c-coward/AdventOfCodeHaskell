@@ -5,12 +5,12 @@ import Util.Parsing ( Parser )
 import qualified Util.Parsing as P
 
 import Data.Char ( isSpace )
-import Data.List ( nub )
+import Data.List ( nub, elemIndices )
 
 import qualified Program.RunDay as R (runDay, Day)
 
 runDay :: R.Day
-runDay = R.runDay inputParser partA partB
+runDay = R.runDay inputParser partA partB -- replace either with partC to run it
 
 type Input = [V2 Int]
 type OutputA = Int
@@ -24,6 +24,9 @@ partA = length . nub . scanl follow 0 . scanl (+) 0
 
 partB :: Input -> OutputB
 partB = length . nub . (!! 9) . iterate (scanl follow 0) . scanl (+) 0
+
+partC :: Input -> OutputB
+partC = head . elemIndices 1 . map (length . nub) . iterate (scanl follow 0) . scanl (+) 0
 
 touching t h = case h - t of (V2 x y) -> abs x <= 1 && abs y <= 1
 
