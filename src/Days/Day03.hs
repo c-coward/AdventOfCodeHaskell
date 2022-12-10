@@ -30,6 +30,3 @@ overlap (x:xs) = head [c | c <- x, all (elem c) xs]
 prioritize :: Char -> Int
 prioritize c | isUpper c = fromEnum c - 38
              | otherwise = fromEnum c - 96
-
-chunks n [] = []
-chunks n xs = case splitAt n xs of (a, as) -> a : chunks n as
