@@ -31,7 +31,6 @@ partA = product . take 2 . reverse . sort . map inspections . A.elems .
 partB :: Input -> OutputB
 partB = product . take 2 . reverse . sort . map inspections . A.elems .
     execState (forM_ [1..10000] $ const doRound) .
-    -- (\as -> A.amap (\m@M{..} -> m{alter=(`mod` getMods as) . alter}) as)
     ((\i -> A.amap (\m@M{..} -> m{alter=(`mod` i) . alter})) =<< getMods)
 
 getMods :: A.Array Int Monkey -> Int
