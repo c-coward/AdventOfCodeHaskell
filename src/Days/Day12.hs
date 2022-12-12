@@ -27,9 +27,6 @@ partA = evalState (starts >>= bfs)
 
 partB :: Input -> OutputB
 partB = evalState (startsA >>= bfs)
-    -- traceId . unlines . chunks 8 . evalState (startsA >>=
-    -- steps >>= steps >>= steps >>= steps
-    -- >> gets A.elems)
 
 type Grid = A.Array (Pair Int) Char
 type BFS = State Grid
