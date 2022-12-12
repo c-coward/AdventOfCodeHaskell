@@ -5,6 +5,8 @@ module Util.Util
     , module Linear.V2) where
 
 import Control.Applicative
+import Data.Ix
+import Data.List (elemIndex)
 import Linear.V2
 
 -- | F# Style forward-application
@@ -38,6 +40,12 @@ instance Num a => Num (Pair a) where
     abs = fmap abs
     signum = fmap signum
     fromInteger = pure . fromInteger
+instance Ix a => Ix (Pair a) where
+    range (P x1 y1, P x2 y2) = [P x y | y <- range (y1, y2), x <- range (x1, x2)]
+    index (p1, p2) p3 = case elemIndex p3 $ range (p1, p2) of
+        Nothing -> error "Index error"
+        Just i -> i
+    inRange (P x1 y1, P x2 y2) (P x y) = inRange (x1, x2) x && inRange (y1, y2) y
 
 chunks n [] = []
 chunks n xs = case splitAt n xs of (a, as) -> a : chunks n as
