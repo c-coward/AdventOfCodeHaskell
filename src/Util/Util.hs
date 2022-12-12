@@ -17,13 +17,16 @@ x |> f = f x
 (.>) :: (a -> b) -> (b -> c) -> (a -> c)
 f .> g = g . f
 
-infixr 1 .>, |>
+infixr 1 .>
+infixl 1 |>
 
 (&&&+) :: (a -> b -> c) -> (a -> b -> d) -> a -> b -> (c, d)
 f &&&+ g = \a b -> (f a b, g a b)
 
 -- Using this over V2 for named fields >:(
-data Pair a = P {x :: a, y :: a} deriving (Eq, Ord, Show)
+data Pair a = P {x :: a, y :: a} deriving (Eq, Ord)
+instance Show a => Show (Pair a) where
+    show P{..} = show (x, y)
 instance Functor Pair where
     fmap f P{..} = P (f x) (f y)
 instance Applicative Pair where
