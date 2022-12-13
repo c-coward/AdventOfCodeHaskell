@@ -6,6 +6,7 @@ module Util.Parsing
     ) where
 
 import Data.Attoparsec.Text
+import Control.Applicative
 import Data.Text ( Text, unpack )
 
 import Prelude hiding ( takeWhile, lines, getLine )
@@ -40,4 +41,4 @@ asString p = p . unpack <$> takeText
 
 -- | Parse elements, ignoring a common separator
 split :: Parser a -> Parser b -> Parser [a]
-split p b = (:) <$> p <*> many' (b >> p)
+split p b = ((:) <$> p <*> many' (b >> p)) <|> return []
