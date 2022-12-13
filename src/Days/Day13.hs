@@ -42,9 +42,8 @@ instance Ord a => Ord (RecList a) where
     compare Nil _ = LT
     compare _ Nil = GT
     compare (a :> b) (c :> d) = case compare a c of
-        LT -> LT
         EQ -> compare b d
-        GT -> GT
+        o -> o
 
 data Item a where
     N :: a -> Item a
