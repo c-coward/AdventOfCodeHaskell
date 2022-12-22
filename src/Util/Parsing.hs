@@ -8,6 +8,7 @@ module Util.Parsing
 import Data.Attoparsec.Text
 import Control.Applicative
 import Data.Text ( Text, unpack )
+import Data.Char ( isSpace, isAlpha )
 
 import Prelude hiding ( takeWhile, lines, getLine )
 
@@ -30,6 +31,9 @@ lines p = many' (line p)
 -- | Execute a parser surrounded by whitespace
 token :: Parser a -> Parser a
 token p = skipSpace *> p <* skipSpace
+
+ident :: Parser String
+ident = unpack <$> token (takeWhile isAlpha)
 
 -- | Helpful function for manipulating the underlying text directly
 asText :: (Text -> a) -> Parser a
