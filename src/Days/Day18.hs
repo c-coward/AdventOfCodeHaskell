@@ -13,25 +13,30 @@ import qualified Program.RunDay as R (runDay, Day)
 runDay :: R.Day
 runDay = R.runDay inputParser partA partB
 
-type Input = [(Int, Int, Int)]
+type Input = S.Set Point3
 type OutputA = Int
-type OutputB = ()
+type OutputB = Int
 
 inputParser :: Parser Input
-inputParser = P.lines parseLine
+inputParser = S.fromList <$> P.lines parseLine
 
 partA :: Input -> OutputA
-partA = (map =<< exposed . S.fromList) .> concat .> length
+partA = (S.map =<< exposed) .> S.unions .> length
 
 partB :: Input -> OutputB
 partB = undefined
 
-allPoints3D :: [(Int, Int, Int)]
-allPoints3D = [(x, y, z) | d <- [0..]
-    , x <- [0..d], y <- [0..d], let z = d - x - y, z >= 0]
+type Point3 = (Int, Int, Int)
+type PointPair = (Point3, Point3)
 
-exposed :: S.Set (Int, Int, Int) -> (Int, Int, Int) -> [(Int, Int, Int)]
-exposed s (x,y,z) = filter (`S.notMember` s)
-    $ concat [[(x+d,y,z), (x,y+d,z), (x,y,z+d)] | d <- [-1,1]]
+data Problem = Problem
+    { points :: S.Set PointPair
+    , sets :: M.Map PointPair Int
+    , num :: Int}
+makeProblem s = Problem s M.empty 0
+
+exposed :: S.Set Point3 -> Point3 -> S.Set PointPair
+exposed s a@(x,y,z) = S.filter (fst .> (`S.notMember` s)) . S.fromList
+    $ concat [[((x+d,y,z), a), ((x,y+d,z), a), ((x,y,z+d), a)] | d <- [-1,1]]
 
 parseLine = (,,) <$> P.decimal <*> (P.anyChar >> P.decimal) <*> (P.anyChar >> P.decimal)
