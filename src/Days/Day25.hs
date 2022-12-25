@@ -14,7 +14,7 @@ runDay = R.runDay inputParser partA partB
 
 type Input = [String]
 type OutputA = String
-type OutputB = ()
+type OutputB = String
 
 inputParser :: Parser Input
 inputParser = P.asString lines
@@ -23,9 +23,8 @@ partA :: Input -> OutputA
 partA = map parseBQuin .> sum .> decToQuin
 
 partB :: Input -> OutputB
-partB = undefined
+partB = const "merry advent of codemas :)"
 
-parseBQuin :: String -> Int
 parseBQuin = foldl (\b a -> f a + b * 5) 0 where
     f = \case
         '=' -> -2
@@ -33,13 +32,11 @@ parseBQuin = foldl (\b a -> f a + b * 5) 0 where
         c -> digitToInt c
 
 decToQuin = unfoldr getDig .> (\case {[] -> "0"; x -> reverse x}) where
-    getDig :: Int -> Maybe (Char, Int)
     getDig = do
-        m <- (`mod` 5)
-        let (m', r) = case m of
-                3 -> ('=', 5)
-                4 -> ('-', 5)
-                n -> (intToDigit n, 0)
+        (m, r) <- (`mod` 5) .> \case
+            3 -> ('=', 5)
+            4 -> ('-', 5)
+            n -> (intToDigit n, 0)
         \case
             0 -> Nothing
-            n -> Just (m', div (r + n) 5)
+            n -> Just (m, div (r + n) 5)
